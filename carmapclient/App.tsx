@@ -26,8 +26,8 @@ const httpUrl =
     : 'http://10.0.2.2:4000/graphql';
 const wsUrl =
   Platform.OS === 'ios'
-    ? 'ws://localhost:4000/graphql'
-    : 'ws://10.0.2.2:4000/graphql';
+    ? 'ws://localhost:4000/subscriptions'
+    : 'ws://10.0.2.2:4000/subscriptions';
 
 // Initialize Apollo Client and Http/WebSocket links
 const httpLink = new HttpLink({

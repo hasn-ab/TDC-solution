@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 20,
     right: 20,
+    zIndex: 5, // added this to fix click issue
   },
 });
 

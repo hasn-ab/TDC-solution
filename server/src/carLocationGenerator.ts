@@ -4,9 +4,11 @@ import {
   getGreatCircleBearing,
   isPointInPolygon,
 } from "geolib";
+import { CAR_CHANGED } from "./keys";
+import { pubsub } from "./pubsub";
 
 const UPDATE_INTERVAL_MS = 1000;
-const CAR_SPEED_METERSPERMS = 8 / 1000.;
+const CAR_SPEED_METERSPERMS = 8 / 1000;
 const MAX_CAR_DISTANCE_PER_UPDATE_INTERVAL_METERS =
   UPDATE_INTERVAL_MS * CAR_SPEED_METERSPERMS;
 
@@ -17,11 +19,11 @@ function startPublishingLocationUpdates() {
   const numCars = 10;
 
   let cars = [
-    ...Array.from({length: numCars}, (_, i) => i + 1).map((i) => ({
-        id: i.toString(),
-        location: randomPointInManhattan(),
-        destination: randomPointInManhattan(),
-        distanceToDestination: -1,
+    ...Array.from({ length: numCars }, (_, i) => i + 1).map((i) => ({
+      id: i.toString(),
+      location: randomPointInManhattan(),
+      destination: randomPointInManhattan(),
+      distanceToDestination: -1,
     })),
   ];
 
@@ -51,6 +53,10 @@ function startPublishingLocationUpdates() {
     // At this point the locations of the cars have been updated.
     // It would make sense to broadcast this update somehow.
     // See https://www.apollographql.com/docs/apollo-server/data/subscriptions/#the-pubsub-class
+    //publishing the updated cars
+    pubsub.publish(CAR_CHANGED, {
+      updatedCars: cars,
+    });
   }, UPDATE_INTERVAL_MS);
 }
 
